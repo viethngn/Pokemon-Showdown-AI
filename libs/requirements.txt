@@ -1,0 +1,5 @@
+###### pip install -r libs/requirements.txt ######
+pandas
+requests
+mysql-connector-python
+tabulate

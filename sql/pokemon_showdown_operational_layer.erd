@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<diagram version="1" name="pokemon_showdown_operational_layer">
+	<entities>
+		<data-source id="mysql8-18b882924a9-5929430c53efbf8c">
+			<entity id="1" name="tb_ps_players" fq-name="pokemon_showdown.tb_ps_players">
+				<path name="pokemon_showdown"/>
+			</entity>
+			<entity id="2" name="tb_ps_replay_details" fq-name="pokemon_showdown.tb_ps_replay_details">
+				<path name="pokemon_showdown"/>
+			</entity>
+			<entity id="3" name="tb_ps_replays" fq-name="pokemon_showdown.tb_ps_replays">
+				<path name="pokemon_showdown"/>
+			</entity>
+			<entity id="4" name="tb_static_abilities" fq-name="pokemon_showdown.tb_static_abilities">
+				<path name="pokemon_showdown"/>
+			</entity>
+			<entity id="5" name="tb_static_learn_sets" fq-name="pokemon_showdown.tb_static_learn_sets">
+				<path name="pokemon_showdown"/>
+			</entity>
+			<entity id="6" name="tb_static_movedex" fq-name="pokemon_showdown.tb_static_movedex">
+				<path name="pokemon_showdown"/>
+			</entity>
+			<entity id="7" name="tb_static_pokedex" fq-name="pokemon_showdown.tb_static_pokedex">
+				<path name="pokemon_showdown"/>
+			</entity>
+			<entity id="8" name="tb_static_type_chart" fq-name="pokemon_showdown.tb_static_type_chart">
+				<path name="pokemon_showdown"/>
+			</entity>
+		</data-source>
+	</entities>
+	<relations>
+		<relation name="tb_ps_replay_details_FK_1" fq-name="pokemon_showdown.tb_ps_replay_details.tb_ps_replay_details_FK_1" type="fk" pk-ref="1" fk-ref="2"/>
+		<relation name="tb_ps_replays_FK" fq-name="pokemon_showdown.tb_ps_replays.tb_ps_replays_FK" type="fk" pk-ref="1" fk-ref="3"/>
+		<relation name="tb_ps_replays_FK_1" fq-name="pokemon_showdown.tb_ps_replays.tb_ps_replays_FK_1" type="fk" pk-ref="1" fk-ref="3"/>
+		<relation name="tb_ps_replay_details_FK" fq-name="pokemon_showdown.tb_ps_replay_details.tb_ps_replay_details_FK" type="fk" pk-ref="3" fk-ref="2"/>
+		<relation name="tb_static_pokedex_FK" fq-name="pokemon_showdown.tb_static_pokedex.tb_static_pokedex_FK" type="fk" pk-ref="4" fk-ref="7"/>
+		<relation name="tb_static_pokedex_FK_1" fq-name="pokemon_showdown.tb_static_pokedex.tb_static_pokedex_FK_1" type="fk" pk-ref="4" fk-ref="7"/>
+		<relation name="tb_static_pokedex_FK_2" fq-name="pokemon_showdown.tb_static_pokedex.tb_static_pokedex_FK_2" type="fk" pk-ref="4" fk-ref="7"/>
+		<relation name="tb_ps_replay_details_FK_2" fq-name="pokemon_showdown.tb_ps_replay_details.tb_ps_replay_details_FK_2" type="fk" pk-ref="6" fk-ref="2"/>
+		<relation name="tb_static_learn_sets_FK" fq-name="pokemon_showdown.tb_static_learn_sets.tb_static_learn_sets_FK" type="fk" pk-ref="6" fk-ref="5"/>
+		<relation name="tb_ps_replay_details_FK_3" fq-name="pokemon_showdown.tb_ps_replay_details.tb_ps_replay_details_FK_3" type="fk" pk-ref="7" fk-ref="2"/>
+		<relation name="tb_static_learn_sets_FK_1" fq-name="pokemon_showdown.tb_static_learn_sets.tb_static_learn_sets_FK_1" type="fk" pk-ref="7" fk-ref="5"/>
+		<relation name="tb_static_movedex_FK" fq-name="pokemon_showdown.tb_static_movedex.tb_static_movedex_FK" type="fk" pk-ref="8" fk-ref="6"/>
+		<relation name="tb_static_pokedex_FK_3" fq-name="pokemon_showdown.tb_static_pokedex.tb_static_pokedex_FK_3" type="fk" pk-ref="8" fk-ref="7"/>
+		<relation name="tb_static_pokedex_FK_4" fq-name="pokemon_showdown.tb_static_pokedex.tb_static_pokedex_FK_4" type="fk" pk-ref="8" fk-ref="7"/>
+	</relations>
+</diagram>

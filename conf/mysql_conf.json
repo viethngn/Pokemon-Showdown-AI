@@ -1,0 +1,7 @@
+{
+    "mysql_host": "localhost",
+    "mysql_user": "autoaccess",
+    "mysql_password": "autoaccess",
+    "mysql_db": "pokemon_showdown",
+    "mysql_port": 3306
+}
