@@ -31,10 +31,10 @@ def main():
         f"{prog_path}/replays/{start_time.strftime('%Y%m%d')}/{start_time.strftime('%Y%m%d_%H')}_replay_save.json",
         'json',
         replays)
-    save_to_files(
-        f"{prog_path}/replays/{start_time.strftime('%Y%m%d')}/{start_time.strftime('%Y%m%d_%H')}_replay_save.csv",
-        'csv',
-        replays)
+    # save_to_files(
+    #     f"{prog_path}/replays/{start_time.strftime('%Y%m%d')}/{start_time.strftime('%Y%m%d_%H')}_replay_save.csv",
+    #     'csv',
+    #     replays)
 
     # get replay details:
     r_details = get_replay_details(replays)

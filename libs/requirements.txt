@@ -3,3 +3,4 @@ pandas
 requests
 mysql-connector-python
 tabulate
+requests

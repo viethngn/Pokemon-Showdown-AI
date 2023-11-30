@@ -42,3 +42,35 @@ JSON = 'json'
 CSV = 'csv'
 SQL = 'sql'
 MYSQL = 'mysql'
+
+# Status Conditions
+NO_STATUS = 0
+BURN = 1
+FREEZE = 2
+PARALYSIS = 3
+POISON = 4
+BADLY_POISON = 5
+SLEEP = 6
+
+# Terrain
+T_NONE = 0
+T_ELECTRIC = 1
+T_GRASSY = 2
+T_MISTY = 3
+T_PSYCHIC = 4
+
+# Weather
+W_NONE = 0
+W_SUN = 1
+W_RAIN = 2
+W_SAND = 3
+W_SNOW = 4
+W_EX_SUN = 5
+W_EX_RAIN = 6
+W_EX_WIND = 7
+
+# Room effect
+R_NONE = 0
+R_TRICK_ROOM = 1
+R_WONDER_ROOM = 2
+R_MAGIC_ROOM = 3
