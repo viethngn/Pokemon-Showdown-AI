@@ -32,7 +32,7 @@ NO_EF = (3, 0)
 # constants for list of types
 PKM_TYPES = ["bug","dark","dragon","electric","fairy","fighting","fire","flying","ghost","grass","ground","ice","normal","poison","psychic","rock","steel","water"]
 
-# constants for insert toe MySQL datatype
+# constants for insert to MySQL datatype
 PS_REPLAY = 'ps_replay'
 PS_RDETAILS = 'ps_replay_detail'
 PS_PLAYER = 'ps_player'

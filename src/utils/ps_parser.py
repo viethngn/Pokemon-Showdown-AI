@@ -3,6 +3,7 @@ import re
 
 import src.const.ps_constants as const
 from src.const.ps_pkm_special import SPECIAL_FORMS
+from src.db.mysql_connector import MySQLConnector
 
 
 def type_effectiveness_converter(eff_code):
@@ -255,7 +256,7 @@ def sql_ps_player_parser(filepath):
     return sql_out
 
 
-def sql_ps_replay_parser(filepath, mysql_conn):
+def sql_ps_replay_parser(filepath, mysql_conn: MySQLConnector):
     with open(filepath, 'r') as file:
         data = json.load(file)
     sql_out = []
@@ -295,7 +296,7 @@ def remove_special_pkm_forms_from_battle_log(log):
             cleaned_log = cleaned_log.replace(form, base)
     return cleaned_log
 
-def sql_ps_replay_detail_parser(filepath, mysql_conn):
+def sql_ps_replay_detail_parser(filepath, mysql_conn: MySQLConnector):
     with open(filepath, 'r') as file:
         data = json.load(file)
     sql_out = []

@@ -1,5 +1,6 @@
 import csv
 import json
+import re
 from random import uniform
 from time import sleep
 
@@ -8,7 +9,7 @@ import requests
 import src.const.ps_constants as const
 from src.cache.ps_static_data import PSStaticData
 from src.utils.ps_parser import type_chart_parser, abilities_parser, movedex_parser, items_parser, \
-    pokedex_parser, learn_sets_parser
+    pokedex_parser, learn_sets_parser, remove_special_pkm_forms_from_battle_log
 from src.utils.udf_utils import fix_response_text
 
 
@@ -41,12 +42,12 @@ def get_ps_replays():
             Error message: {e}""")
             break
 
-        if response is not None:
+        if response.status_code == 200:
             data = json.loads(response.text[1:])
             replays.extend(data)
         else:
             print(f"""There is an error calling the get_ps_replays api at page {page}
-            No response received.""")
+            No response received. Status code {response.status_code}""")
             break
 
         # ps has a limitation of 51 per page in the response
@@ -288,3 +289,37 @@ def save_to_files(filepath, mode, data, static=None, cache=None):
             with open(filepath, 'w') as file:
                 for line in sql_text_list:
                     file.write(f'{line}\n')
+
+
+def get_cleaned_battle_log(log: str) -> tuple:
+    raw_data = remove_special_pkm_forms_from_battle_log(data[24]['log']).split('|start')
+    battle_log = raw_data[1]
+
+    battle_log = (re.sub(r'|inactive|.*?left.\n', '', battle_log)
+                  .replace('|upkeep\n', '')
+                  .replace('|\n', ''))
+
+    battle_log_list = battle_log.strip().split('\n')
+
+    # remove unnecessary rows
+    poke_player_list = [x for x in raw_data[0].split('\n') if '|poke|' in x or '|player|' in x]
+
+    battle_log_cleaned = poke_player_list + ['|turn|0']
+    for row in battle_log_list:
+        if '|n|' in row or '|t:|' in row or '|j|' in row or '|l|' in row or '|b|' in row or '|raw|' in row:
+            continue
+        battle_log_cleaned.append(row)
+
+    pkm_list = re.findall("(?:switch\||drag\||replace\|).*?\n", battle_log)
+    battling_pkm = {}
+    for item in pkm_list:
+        item = item.replace('p1a', 'p').replace('p1b', 'p').replace('p2a', 'p').replace('p2b', 'p')
+        pkm_text = item.replace(' ', '').lower().split('|')[1:3]
+        pkm_text = '|'.join(pkm_text).split('p:')[1].split(',')[0]
+        p_key = re.sub(r'[^A-Za-z0-9 ]+', '', pkm_text.split('|')[0])
+        p_val = re.sub(r'[^A-Za-z0-9 ]+', '', pkm_text.split('|')[1])
+        if p_key in battling_pkm.keys():
+            continue
+        battling_pkm[p_key] = p_val
+
+    return battling_pkm, battle_log_cleaned
