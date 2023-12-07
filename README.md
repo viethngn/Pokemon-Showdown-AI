@@ -144,7 +144,7 @@ This view will show you the top 20 most used Pokemons in battles with their usag
 ```mysql
 select * from view_top_20_most_used_moves;
 ```
-This view will show you the top 20 most used Pokemons in battles with their usage rate (%) and their total base stats.
+This view will show you the top 20 most used moves in battles with their usage rate (%) and their power.
 
 #### 3. How powerful (total base stats) your Pokemons should be?
 ```mysql
