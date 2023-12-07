@@ -48,8 +48,8 @@ def main():
     # get player_details for this run
     player_ids = set()
     for replay in replays:
-        player_ids.add(remove_invalid_char_for_url(replay['p1']))
-        player_ids.add(remove_invalid_char_for_url(replay['p2']))
+        player_ids.add(remove_invalid_char_for_url(replay['players'][0]))
+        player_ids.add(remove_invalid_char_for_url(replay['players'][1]))
     player_details = get_player_details(player_ids)
 
     # save player details to file

@@ -12,4 +12,5 @@ SPECIAL_FORMS = {"Vivillon": ["Vivillon-Archipelago","Vivillon-Continental","Viv
 'Shellos': ["Shellos-East","Shellos-West"],
 'Gastrodon': ["Gastrodon-East","Gastrodon-West"],
 'Deerling': ["Deerling-Spring","Deerling-Summer","Deerling-Autumn","Deerling-Winter"],
-'Sawsbuck': ["Sawsbuck-Spring","Sawsbuck-Summer","Sawsbuck-Autumn","Sawsbuck-Winter"]}
+'Sawsbuck': ["Sawsbuck-Spring","Sawsbuck-Summer","Sawsbuck-Autumn","Sawsbuck-Winter"],
+'Dudunsparce-*': ["Dudunsparce-Three-Segment"]}

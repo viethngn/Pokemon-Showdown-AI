@@ -292,7 +292,7 @@ def save_to_files(filepath, mode, data, static=None, cache=None):
 
 
 def get_cleaned_battle_log(log: str) -> tuple:
-    raw_data = remove_special_pkm_forms_from_battle_log(data[24]['log']).split('|start')
+    raw_data = remove_special_pkm_forms_from_battle_log(log).split('|start')
     battle_log = raw_data[1]
 
     battle_log = (re.sub(r'|inactive|.*?left.\n', '', battle_log)
@@ -306,20 +306,26 @@ def get_cleaned_battle_log(log: str) -> tuple:
 
     battle_log_cleaned = poke_player_list + ['|turn|0']
     for row in battle_log_list:
-        if '|n|' in row or '|t:|' in row or '|j|' in row or '|l|' in row or '|b|' in row or '|raw|' in row:
+        if ('|n|' in row or '|t:|' in row or '|j|' in row or '|l|' in row
+                or '|b|' in row or '|raw|' in row or '|c|' in row):
             continue
         battle_log_cleaned.append(row)
 
     pkm_list = re.findall("(?:switch\||drag\||replace\|).*?\n", battle_log)
     battling_pkm = {}
     for item in pkm_list:
-        item = item.replace('p1a', 'p').replace('p1b', 'p').replace('p2a', 'p').replace('p2b', 'p')
-        pkm_text = item.replace(' ', '').lower().split('|')[1:3]
+        player = item.split(':')[0].split('|')[1].replace('p1a', 'p1').replace('p1b', 'p1').replace('p2a', 'p2').replace('p2b', 'p2')
+        item_ref = item.replace('p1a', 'p').replace('p1b', 'p').replace('p2a', 'p').replace('p2b', 'p')
+        pkm_text = item_ref.replace(' ', '').lower().split('|')[1:3]
         pkm_text = '|'.join(pkm_text).split('p:')[1].split(',')[0]
-        p_key = re.sub(r'[^A-Za-z0-9 ]+', '', pkm_text.split('|')[0])
+        p_key = f"{player}_{re.sub(r'[^A-Za-z0-9 ]+', '', pkm_text.split('|')[0])}"
         p_val = re.sub(r'[^A-Za-z0-9 ]+', '', pkm_text.split('|')[1])
         if p_key in battling_pkm.keys():
             continue
         battling_pkm[p_key] = p_val
 
     return battling_pkm, battle_log_cleaned
+
+
+def clean_pkm_name_text(pkm_name: str) -> str:
+    return re.sub(r'\W+', '', pkm_name.lower())

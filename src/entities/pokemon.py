@@ -3,7 +3,7 @@ from src.const.ps_constants import NO_STATUS
 
 class Pokemon:
 
-    def __init__(self, pkm_id, name,
+    def __init__(self, pkm_id, pkm_code,
                  in_battle=False,
                  hp=100,
                  status_condition=NO_STATUS,
@@ -14,7 +14,7 @@ class Pokemon:
                  spd_boost=0,
                  spe_boost=0):
         self.pkm_id = pkm_id
-        self.name = name
+        self.pkm_code = pkm_code
         self.hp = hp
         self.in_battle = in_battle
         self.status_condition = status_condition
@@ -24,3 +24,4 @@ class Pokemon:
         self.spa_boost = spa_boost
         self.spd_boost = spd_boost
         self.spe_boost = spe_boost
+
