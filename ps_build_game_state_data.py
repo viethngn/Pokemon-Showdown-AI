@@ -1,4 +1,5 @@
 import argparse
+import glob
 import json
 import re
 from datetime import datetime
@@ -41,7 +42,6 @@ def get_pkm(pkm_code: str, pkms: list[Pokemon]):
         if pkm.pkm_code == pkm_code:
             return pkm
     print(f"Can't get pkm: {pkm_code}")
-
 
 
 def get_pkm_row_detail(row: str, battling_pkm: dict[str]):
@@ -249,6 +249,25 @@ def write_game_state(mysql_conn: MySQLConnector, output_path: str, battle_log: t
     game_state_to_file(output_path, game_state)
 
 
+def process_replay_file(file_path: str, output_path: str, mysql_conn: MySQLConnector, game_ids: set):
+    print(f"Processing file: {file_path}")
+    # load the replay detail files
+    with open(file_path, 'r') as file:
+        data = json.load(file)
+
+    for log in data:
+        if log['id'] in game_ids:
+            print(f"Skipping duplicated battle log: {log['id']}")
+            continue
+        else:
+            game_ids.add(log['id'])
+            print(f"Processing battle log: {log['id']}")
+        if '|start' not in log['log']:
+            continue
+        battle_log = get_cleaned_battle_log(log['log'])
+        write_game_state(mysql_conn, output_path, battle_log)
+
+
 def main():
     parser = argparse.ArgumentParser(
         prog='PokemonShowdownMLGameStateData',
@@ -269,19 +288,19 @@ def main():
     # open mysql connection
     mysql_conn = open_mysql_connection(configs)
 
-    # load the replay detail files
-    with open(file_path, 'r') as file:
-        data = json.load(file)
-
     # create the output data file
     ini_data_file(output_path)
 
-    for log in data:
-        print(f"Processing battle log: {log['id']}")
-        if '|start' not in log['log']:
-            continue
-        battle_log = get_cleaned_battle_log(log['log'])
-        write_game_state(mysql_conn, output_path, battle_log)
+    # track duplicated games
+    game_ids = set()
+
+    if file_path:
+        process_replay_file(file_path, output_path, mysql_conn, game_ids)
+    else:
+        # pet_projects/Pokemon-Showdown-AI/replays/20231206/20231206_16_replay_details.json
+        list_of_files = glob.glob(f"{prog_path}/replays/*/*_replay_details.json")
+        for file_name in list_of_files:
+            process_replay_file(file_name, output_path, mysql_conn, game_ids)
 
     end_time = datetime.now()
     print(f"Process finishes. Time taken: {end_time - start_time}")

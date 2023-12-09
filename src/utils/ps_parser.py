@@ -268,8 +268,12 @@ def sql_ps_replay_parser(filepath, mysql_conn: MySQLConnector):
         r_format = v['format']
         r_id = v['id']
 
-        player1 = re.sub(r'[^A-Za-z0-9 ]+', '', v['p1']).replace(' ', '').lower()
-        player2 = re.sub(r'[^A-Za-z0-9 ]+', '', v['p2']).replace(' ', '').lower()
+        if 'p1' in v.keys():
+            player1 = re.sub(r'[^A-Za-z0-9 ]+', '', v['p1']).replace(' ', '').lower()
+            player2 = re.sub(r'[^A-Za-z0-9 ]+', '', v['p2']).replace(' ', '').lower()
+        else:
+            player1 = re.sub(r'[^A-Za-z0-9 ]+', '', v['players'][0]).replace(' ', '').lower()
+            player2 = re.sub(r'[^A-Za-z0-9 ]+', '', v['players'][1]).replace(' ', '').lower()
         p_ids_db = mysql_conn.select(f"SELECT * FROM tb_ps_players WHERE id IN ('{player1}', '{player2}')")
 
         # skip through battles where there's not enough player data
@@ -303,8 +307,13 @@ def sql_ps_replay_detail_parser(filepath, mysql_conn: MySQLConnector):
     sql_command = "INSERT INTO pokemon_showdown.tb_ps_replay_details (replay_id, turn, player_id, pkm_id, move_id) VALUES "
 
     for v in data:
-        player1 = re.sub(r'[^A-Za-z0-9 ]+', '', v['p1']).replace(' ', '').lower()
-        player2 = re.sub(r'[^A-Za-z0-9 ]+', '', v['p2']).replace(' ', '').lower()
+        print(f"Processing replay details: {v['id']}")
+        if 'p1' in v.keys():
+            player1 = re.sub(r'[^A-Za-z0-9 ]+', '', v['p1']).replace(' ', '').lower()
+            player2 = re.sub(r'[^A-Za-z0-9 ]+', '', v['p2']).replace(' ', '').lower()
+        else:
+            player1 = re.sub(r'[^A-Za-z0-9 ]+', '', v['players'][0]).replace(' ', '').lower()
+            player2 = re.sub(r'[^A-Za-z0-9 ]+', '', v['players'][1]).replace(' ', '').lower()
         p_ids_db = mysql_conn.select(f"SELECT * FROM tb_ps_players WHERE id IN ('{player1}', '{player2}')")
 
         # skip through battles where there's not enough player data
@@ -337,9 +346,9 @@ def sql_ps_replay_detail_parser(filepath, mysql_conn: MySQLConnector):
             if '|turn|' in mv:
                 turn = int(mv.replace('|turn|', '').replace('\n', ''))
             else:
-                mv_details = re.split('\||/', (mv.replace(' ', '').replace('|move|', '').lower()
-                              .replace('p1a:', 'p1a/').replace('p1b:', 'p1a/')
-                              .replace('p2a:', 'p1a/').replace('p2b:', 'p1a/')))
+                mv_details = re.split('\||`', (mv.replace(' ', '').replace('|move|', '').lower()
+                              .replace('p1a:', 'p1a`').replace('p1b:', 'p1a`')
+                              .replace('p2a:', 'p1a`').replace('p2b:', 'p1a`')))
                 if 'p1' in mv_details[0]:
                     player_id = player1
                 else:

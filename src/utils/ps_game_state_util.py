@@ -129,7 +129,7 @@ def ini_data_file(out_filepath: str):
 
 
 def game_state_to_file(out_filepath: str, data: GameState):
-    with open(out_filepath, 'a+') as gs_file:
+    with open(out_filepath, 'a') as gs_file:
         line = game_state_to_row(data)
         gs_file.write(f"{line}\n")
 
