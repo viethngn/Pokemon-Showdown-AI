@@ -25,11 +25,11 @@ def read_config(filename):
     return configs
 
 
-def get_ps_replays():
+def get_ps_replays(pages=25):
     replays = []
 
     # set page limit to call 25 pages in the paginated API
-    for page in range(1, 26):
+    for page in range(1, pages + 1):
         print(f"Calling get replay API for page {page}")
 
         try:
