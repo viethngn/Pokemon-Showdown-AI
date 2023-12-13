@@ -74,11 +74,11 @@ def get_replay_details(replays):
             Error message: {e}""")
             break
 
-        if response is not None:
+        if response.status_code == 200:
             data = json.loads(response.text)
             replay_details.append(data)
         else:
-            print(f"""There is an error calling the get_replay_details api
+            print(f"""There is an error calling the get_replay_details api: https://replay.pokemonshowdown.com/{r['id']}.json
             No response received.""")
             break
 
