@@ -113,7 +113,7 @@ def create_player_state(mysql_conn: MySQLConnector, pkm_list: list[str]):
     return player_state
 
 
-def initiate_game_state(mysql_conn: MySQLConnector, p1_win: bool, player_pkm_list: list) -> GameState:
+def initiate_game_state(mysql_conn: MySQLConnector, p1_win: bool, player_pkm_list: tuple[list, list]) -> GameState:
     # p1
     p1state = create_player_state(mysql_conn, player_pkm_list[0])
     # p2
