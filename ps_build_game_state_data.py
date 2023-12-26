@@ -47,10 +47,15 @@ def get_pkm(pkm_code: str, pkms: list[Pokemon]):
 def get_pkm_row_detail(row: str, battling_pkm: dict[str]):
     r_detail = (row.replace('p1a', 'p1').replace('p1b', 'p1')
                 .replace('p2a', 'p2').replace('p2b', 'p2').lower())
+
     player = r_detail.split(': ')[0].split('|')[-1]
     print(r_detail)
     print(battling_pkm)
-    pkm_nickname = re.sub(r'[^A-Za-z0-9 ]+', '', r_detail.split(': ')[1].split('|')[0]).replace(' ', '')
+
+    if 'p1: ' in r_detail:
+        pkm_nickname = re.sub(r'[^A-Za-z0-9 ]+', '', r_detail.split('p1: ')[1].split('|')[0]).replace(' ', '')
+    else:
+        pkm_nickname = re.sub(r'[^A-Za-z0-9 ]+', '', r_detail.split('p2: ')[1].split('|')[0]).replace(' ', '')
     pkm_code = battling_pkm[f"{player}_{pkm_nickname}"]
     return player, pkm_code
 
@@ -256,16 +261,21 @@ def process_replay_file(file_path: str, output_path: str, mysql_conn: MySQLConne
         data = json.load(file)
 
     for log in data:
-        if log['id'] in game_ids:
-            print(f"Skipping duplicated battle log: {log['id']}")
+        # lazily ignore weird naming patterns logs causing parsing problems
+        try:
+            if log['id'] in game_ids:
+                print(f"Skipping duplicated battle log: {log['id']}")
+                continue
+            else:
+                game_ids.add(log['id'])
+                print(f"Processing battle log: {log['id']}")
+            if '|start' not in log['log']:
+                continue
+            battle_log = get_cleaned_battle_log(log['log'])
+            write_game_state(mysql_conn, output_path, battle_log)
+        except Exception as e:
+            print(f"Failed to process battle log: {log['id']}\nError: {e}")
             continue
-        else:
-            game_ids.add(log['id'])
-            print(f"Processing battle log: {log['id']}")
-        if '|start' not in log['log']:
-            continue
-        battle_log = get_cleaned_battle_log(log['log'])
-        write_game_state(mysql_conn, output_path, battle_log)
 
 
 def main():
