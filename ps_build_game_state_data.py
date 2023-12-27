@@ -290,7 +290,7 @@ def main():
     file_path = args.file_path
     prog_path = args.prog_path
     start_time = datetime.now()
-    output_path = f"{prog_path}/model_data/game_state/{start_time.strftime('%Y%m%d')}_game_state.csv"
+    output_path = f"{prog_path}/ml_model/game_state/{start_time.strftime('%Y%m%d')}_game_state.csv"
 
     # read configs
     configs = read_config(f'{prog_path}/conf/mysql_conf.json')
